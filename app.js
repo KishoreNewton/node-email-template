@@ -1,20 +1,20 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const exphbs = require('express-handlebars')
+const ejs = require('ejs')
 const nodemailer = require('nodemailer')
 const path = require('path')
 const app = express()
 
-app.engine('handlebars', exphbs())
-app.set('view engine', 'handlebars')
+app.set('view engine', 'html')
+app.engine('html', ejs.renderFile)
+
+app.use(express.static(__dirname + '/public'))
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.use('/public', express.static(path.join(__dirname, 'public')))
-
 app.get('/', (req, res) => {
-    res.send('hello')
+    res.render('home')
 })
 
 app.listen(3000, () => {
